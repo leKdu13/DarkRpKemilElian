@@ -15,6 +15,7 @@ public sealed class ChoppableRock : Component, Component.IDamageable
 	private bool _isMined = false;
 	private ModelRenderer _renderer;
 	private Collider _collider;
+	private GameObject _uiObject;
 
 	protected override void OnStart()
 	{
@@ -23,6 +24,24 @@ public sealed class ChoppableRock : Component, Component.IDamageable
 		_collider = Components.Get<Collider>();
 		
 		UpdateColor();
+		CreateUI();
+	}
+
+	private void CreateUI()
+	{
+		if ( !Networking.IsHost ) return;
+		
+		_uiObject = new GameObject( true, "HealthUI" );
+		_uiObject.SetParent( GameObject );
+		_uiObject.WorldPosition = WorldPosition + Vector3.Up * 50f;
+		
+		var worldPanel = _uiObject.Components.Create<WorldPanel>();
+		worldPanel.PanelSize = new Vector2( 300, 50 );
+		
+		var healthBar = _uiObject.Components.Create<RockHealthBar>();
+		healthBar.TargetRock = this;
+		
+		_uiObject.NetworkSpawn();
 	}
 
 	protected override void OnUpdate()
@@ -30,6 +49,12 @@ public sealed class ChoppableRock : Component, Component.IDamageable
 		if ( _isMined && _timeSinceMined > RespawnTime )
 		{
 			Respawn();
+		}
+		
+		// Make UI always face the camera if it exists
+		if ( _uiObject.IsValid() && Scene.Camera.IsValid() )
+		{
+			_uiObject.WorldRotation = Rotation.LookAt( _uiObject.WorldPosition - Scene.Camera.WorldPosition );
 		}
 	}
 
@@ -81,6 +106,7 @@ public sealed class ChoppableRock : Component, Component.IDamageable
 
 		if ( _renderer.IsValid() ) _renderer.Enabled = false;
 		if ( _collider.IsValid() ) _collider.Enabled = false;
+		if ( _uiObject.IsValid() ) _uiObject.Enabled = false;
 
 		SpawnOre();
 	}
@@ -92,6 +118,7 @@ public sealed class ChoppableRock : Component, Component.IDamageable
 
 		if ( _renderer.IsValid() ) _renderer.Enabled = true;
 		if ( _collider.IsValid() ) _collider.Enabled = true;
+		if ( _uiObject.IsValid() ) _uiObject.Enabled = true;
 	}
 
 	private void SpawnOre()

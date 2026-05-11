@@ -3,7 +3,7 @@
     "__guid": "cd2b3e4f-5d6c-7890-bcde-f01234567801",
     "__version": 2,
     "Flags": 0,
-    "Name": "pickaxe",
+    "Name": "poche",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1.5,1.5,1.5",
@@ -16,7 +16,7 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "PickaxeWeapon",
+        "__type": "PocketWeapon",
         "__guid": "de3c4f5a-6e7d-8901-cdef-012345678902",
         "__enabled": true,
         "Flags": 0,
@@ -58,7 +58,7 @@
           },
           "compiled": null
         },
-        "DisplayName": "Pickaxe",
+        "DisplayName": "Poche",
         "DroppedGameObject": {
           "_type": "gameobject",
           "go": "ef4d5a6b-7f8e-9012-def0-123456789013"

@@ -1,0 +1,108 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<root>
+    <div class="pocket-header">Poche (@(Pocket?.StoredItems.Count ?? 0) / @(Pocket?.MaxSlots ?? 9))</div>
+    <div class="slots-container">
+        @if (Pocket != null)
+        {
+            @for (int i = 0; i < Pocket.MaxSlots; i++)
+            {
+                var item = i < Pocket.StoredItems.Count ? Pocket.StoredItems[i] : null;
+                <div class="slot @(item != null ? "filled" : "empty")">
+                    @if (item != null)
+                    {
+                        <label>@(item.Name)</label>
+                    }
+                </div>
+            }
+        }
+    </div>
+    <div class="controls">Clic Gauche : Prendre | Clic Droit : Lâcher</div>
+</root>
+
+@code {
+    public PocketWeapon Pocket { get; set; }
+
+    protected override void OnUpdate()
+    {
+        // Try to find if local player is holding the pocket
+        var player = Player.Local;
+        if ( player.IsValid() && player.Controller.IsValid() )
+        {
+            var inventory = player.GetComponent<PlayerInventory>();
+            if ( inventory.IsValid() && inventory.ActiveWeapon is PocketWeapon pocket )
+            {
+                Pocket = pocket;
+                Panel.Style.Display = DisplayMode.Flex;
+                return;
+            }
+        }
+        
+        Panel.Style.Display = DisplayMode.None;
+    }
+
+    protected override int BuildHash() => System.HashCode.Combine(Pocket?.StoredItems?.Count);
+}
+
+<style>
+PocketUI {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    width: 320px;
+    background-color: rgba( 20, 20, 20, 0.9 );
+    border-radius: 12px;
+    border: 2px solid rgba( 255, 255, 255, 0.1 );
+    flex-direction: column;
+    padding: 16px;
+    font-family: Poppins, sans-serif;
+    color: white;
+
+    .pocket-header {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+        padding-bottom: 8px;
+    }
+
+    .slots-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .slot {
+        width: 80px;
+        height: 80px;
+        background-color: rgba( 0, 0, 0, 0.5 );
+        border: 1px solid rgba( 255, 255, 255, 0.2 );
+        border-radius: 8px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 4px;
+
+        &.filled {
+            background-color: rgba( 50, 150, 250, 0.2 );
+            border-color: rgba( 50, 150, 250, 0.5 );
+        }
+
+        label {
+            font-size: 12px;
+            text-wrap: wrap;
+        }
+    }
+
+    .controls {
+        font-size: 12px;
+        color: rgba( 255, 255, 255, 0.5 );
+        text-align: center;
+        margin-top: 12px;
+    }
+}
+</style>
