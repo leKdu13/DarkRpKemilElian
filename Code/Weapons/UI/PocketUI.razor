@@ -1,5 +1,6 @@
 @using Sandbox;
 @using Sandbox.UI;
+@namespace Sandbox
 @inherits PanelComponent
 
 <root>
@@ -28,7 +29,7 @@
     protected override void OnUpdate()
     {
         // Try to find if local player is holding the pocket
-        var player = Player.Local;
+        var player = Player.FindLocalPlayer();
         if ( player.IsValid() && player.Controller.IsValid() )
         {
             var inventory = player.GetComponent<PlayerInventory>();

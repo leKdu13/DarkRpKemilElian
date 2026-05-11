@@ -8,17 +8,14 @@ public sealed class PocketWeapon : BaseCarryable
 
 	[Sync] public NetList<GameObject> StoredItems { get; set; } = new();
 
-	protected override bool WantsPrimaryAttack() => Input.Pressed( "attack1" );
-	protected override bool WantsSecondaryAttack() => Input.Pressed( "attack2" );
-
 	public override void OnControl( Player player )
 	{
 		base.OnControl( player );
 
-		if ( WantsPrimaryAttack() )
+		if ( Input.Pressed( "attack1" ) )
 			PickupItem( player );
 
-		if ( WantsSecondaryAttack() )
+		if ( Input.Pressed( "attack2" ) )
 			DropItem( player );
 	}
 
@@ -78,12 +75,5 @@ public sealed class PocketWeapon : BaseCarryable
 				rb.Velocity = player.EyeTransform.Forward * 200f;
 			}
 		}
-	}
-
-	public override void DrawHud( HudPainter painter, Vector2 crosshair )
-	{
-		var len = 6;
-		painter.SetBlendMode( BlendMode.Lighten );
-		painter.DrawCircle( crosshair, len, Color.White );
 	}
 }
