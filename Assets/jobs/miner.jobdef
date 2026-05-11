@@ -8,7 +8,7 @@
   "Command": "/mineur",
   "Order": 0,
   "StartingItems": [
-    "weapons/pickaxe"
+    "weapons/Pickaxe/pickaxe.prefab"
   ],
   "UseOwnerAvatarAppearance": true,
   "Clothing": [],
