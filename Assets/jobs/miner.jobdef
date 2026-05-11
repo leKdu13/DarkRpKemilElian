@@ -1,0 +1,18 @@
+{
+  "Title": "Mineur",
+  "Description": "Vous \u00EAtes mineur. Cassez des rochers, raffinez les minerais et vendez-les pour faire du profit.",
+  "Category": "Civilian",
+  "AccentColor": "0.6,0.6,0.6,1",
+  "Salary": 45,
+  "MaxPlayers": 0,
+  "Command": "/mineur",
+  "Order": 0,
+  "StartingItems": [
+    "weapons/pickaxe"
+  ],
+  "UseOwnerAvatarAppearance": true,
+  "Clothing": [],
+  "IsDefault": false,
+  "__references": [],
+  "__version": 0
+}
